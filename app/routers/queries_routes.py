@@ -19,20 +19,15 @@ def get_db():
     finally:
         db.close()
 
-def log_and_respond(func, db):
-    logger.info(f"Calling: {func.__name__}")
-    try:
-        result = func(db)
-        encoded = jsonable_encoder(result)
-        logger.info(f"{func.__name__} returned {len(encoded) if isinstance(encoded, list) else 'a result'}")
-        return encoded
-    except Exception as e:
-        logger.error(f"Error in {func.__name__}: {e}", exc_info=True)
-        return {"error": str(e)}
+# @router.get("/top_5_doctors_revenue", tags=["Doctors", "Financial"])
+# def route_top_5_doctors_revenue(db: Session = Depends(get_db)):
+#     return log_and_respond(top_5_doctors_revenue, db)
 
-@router.get("/top_5_doctors_revenue", tags=["Doctors", "Financial"])
-def route_top_5_doctors_revenue(db: Session = Depends(get_db)):
-    return log_and_respond(top_5_doctors_revenue, db)
+@router.get("/top_5_doctors_revenue", tags=["Doctors"])
+def get_top_5_doctors_revenue(db: Session = Depends(get_db)):
+    data = top_5_doctors_revenue(db)
+    print("DEBUG:", data) 
+    return data
 
 @router.get("/avg_stay_by_ward", tags=["Operations"])
 def route_avg_stay_by_ward(db: Session = Depends(get_db)):

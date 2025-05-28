@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import func, case, and_, distinct, literal_column, over, cast, Integer, Float, select, log
+from sqlalchemy import func, case, and_, distinct, literal_column, over, cast, Integer, Float, select
+from sqlalchemy import func
 from datetime import datetime, timedelta
 from app.models import (
     Analysis,
@@ -355,12 +356,15 @@ def avg_days_between_visits(db: Session):
     client_visits = select(
         VisitsHistory.client_id,
         VisitsHistory.date.label('visit_date'),
-        lag(VisitsHistory.date).over(partition_by=VisitsHistory.client_id, order_by=VisitsHistory.date).label('prev_visit')
+        func.lag(VisitsHistory.date).over(
+            partition_by=VisitsHistory.client_id,
+            order_by=VisitsHistory.date
+        ).label('prev_visit')
     ).subquery()
     intervals = select(
-        func.julianday(client_visits.c.visit_date) - func.julianday(client_visits.c.prev_visit)
+        (func.julianday(client_visits.c.visit_date) - func.julianday(client_visits.c.prev_visit)).label("interval")
     ).where(client_visits.c.prev_visit.isnot(None)).subquery()
-    stmt = select(func.round(func.avg(intervals.c[0]), 2).label('avg_days_between_visits'))
+    stmt = select(func.round(func.avg(intervals.c.interval), 2).label('avg_days_between_visits'))
     result = db.execute(stmt).scalar()
     return {"avg_days_between_visits": result}
 
