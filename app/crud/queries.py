@@ -1,33 +1,23 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, case, and_, distinct, literal_column, over, cast, Integer, Float, select
-from sqlalchemy import func
-from datetime import datetime, timedelta
 from app.models import (
     Analysis,
-    Appointments,
-    BenefitedClients,
-    Benefits,
     Clients,
     ClientsContraindications,
     Contraindications,
     Doctors,
     DoctorsSalary,
     Hospital,
-    HospitalServices,
-    LoyaltyCardCategories,
     Payments,
     PrescribedAnalysis,
     Procedures,
-    ProceduresAnalysis,
     ProceduresContraindications,
     ProceduresSupplies,
-    Sponsors,
     Staff,
-    Suppliers,
-    Supplies,
     VisitsHistory,
     Wards
 )
+
 
 def top_5_doctors_revenue(db: Session):
     stmt = select(
