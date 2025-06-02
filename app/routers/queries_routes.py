@@ -18,10 +18,7 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# @router.get("/top_5_doctors_revenue", tags=["Doctors", "Financial"])
-# def route_top_5_doctors_revenue(db: Session = Depends(get_db)):
-#     return log_and_respond(top_5_doctors_revenue, db)
+        
 
 @router.get("/top_5_doctors_revenue", tags=["Doctors"])
 def get_top_5_doctors_revenue(db: Session = Depends(get_db)):
