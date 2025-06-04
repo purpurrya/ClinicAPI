@@ -5,7 +5,7 @@ from sqlalchemy import text
 from fastapi.encoders import jsonable_encoder
 from app.database import SessionLocal
 from app.models import Clients
-from app.crud.queries import *
+from app.queries_func.queries import *
 
 router = APIRouter(prefix="/api")
 
