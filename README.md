@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/5bc9d0d1-161d-41b2-a32b-d726af762869)# ClinicAPI
+# ClinicAPI
 
 ## Описание проекта
 
